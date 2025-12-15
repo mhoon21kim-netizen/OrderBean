@@ -322,3 +322,8 @@ Response: { id, status, ... }
 
 **OlderBean** - 빠르고 반복 가능한 커피 주문 경험 ☕
 
+## To-Do List
+
+- TC
+- Implementation
+- Refactoring
