@@ -324,6 +324,6 @@ Response: { id, status, ... }
 
 ## To-Do List
 
-- TC
+- TC 완료!!!!
 - Implementation
 - Refactoring
