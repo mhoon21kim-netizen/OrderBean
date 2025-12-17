@@ -441,3 +441,6 @@ Response: { id, status, ... }
 ### 구현 및 리팩토링
 - [ ] Implementation
 - [ ] Refactoring
+
+### 커밋 오류
+- 오류 확인
