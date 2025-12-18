@@ -16,13 +16,24 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// 데이터베이스 초기화는 테스트 환경에서는 setup.js에서 처리
+// 개발/프로덕션 환경에서는 필요시 여기서 처리
+
 // 라우트
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'OlderBean API Server is running' });
 });
 
+// 인증 라우트
+app.use('/api/auth', require('./routes/auth'));
+
+// 테스트용 주문 엔드포인트 (인증 미들웨어 테스트용)
+const authenticate = require('./middleware/auth');
+app.get('/api/orders', authenticate, (req, res) => {
+  res.json({ message: 'Orders endpoint - authenticated', user: req.user });
+});
+
 // TODO: 라우트 추가
-// app.use('/api/auth', require('./routes/auth'));
 // app.use('/api/menus', require('./routes/menus'));
 // app.use('/api/orders', require('./routes/orders'));
 
