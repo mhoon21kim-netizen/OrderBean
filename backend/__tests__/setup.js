@@ -2,14 +2,22 @@
 process.env.NODE_ENV = 'test';
 process.env.JWT_SECRET = 'test-secret-key';
 process.env.JWT_EXPIRES_IN = '1h';
-process.env.DATABASE_URL = process.env.TEST_DATABASE_URL || 'postgresql://user:password@localhost:5432/orderbean_test';
+
+const sequelize = require('../src/config/database');
+const User = require('../src/models/User');
 
 // 테스트 전후 처리
 beforeAll(async () => {
-  // 테스트 데이터베이스 초기화 등
+  // 테스트 데이터베이스 동기화 (테이블 생성)
+  await sequelize.sync({ force: true });
 });
 
 afterAll(async () => {
-  // 테스트 데이터베이스 정리 등
+  // 테스트 데이터베이스 정리
+  await sequelize.close();
 });
+
+
+
+
 
