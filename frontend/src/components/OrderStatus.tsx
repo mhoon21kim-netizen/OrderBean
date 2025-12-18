@@ -1,29 +1,14 @@
-interface Order {
-  id: string;
-  menuName: string;
-  quantity: number;
-  price: number;
-  status: '주문접수' | '제조중' | '제조완료';
-  createdAt: Date;
-}
+import { Order } from '../types';
+import { ORDER_STATUS, OrderStatusType } from '../constants';
+import { formatDate } from '../utils/date';
+import { formatPrice } from '../utils/format';
 
 interface OrderStatusProps {
   orders: Order[];
-  onStatusChange: (orderId: string, newStatus: '주문접수' | '제조중' | '제조완료') => void;
+  onStatusChange: (orderId: string, newStatus: OrderStatusType) => void;
 }
 
 function OrderStatus({ orders, onStatusChange }: OrderStatusProps) {
-  const formatDate = (date: Date) => {
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${month}월 ${day}일 ${hours}:${minutes}`;
-  };
-
-  const formatPrice = (price: number) => {
-    return `${price.toLocaleString()}원`;
-  };
 
   return (
     <div>
@@ -65,9 +50,9 @@ function OrderStatus({ orders, onStatusChange }: OrderStatusProps) {
               </div>
               
               <div>
-                {order.status === '주문접수' && (
+                {order.status === ORDER_STATUS.RECEIVED && (
                   <button
-                    onClick={() => onStatusChange(order.id, '제조중')}
+                    onClick={() => onStatusChange(order.id, ORDER_STATUS.IN_PROGRESS)}
                     style={{
                       padding: '0.75rem 1.5rem',
                       backgroundColor: '#4CAF50',
@@ -82,7 +67,7 @@ function OrderStatus({ orders, onStatusChange }: OrderStatusProps) {
                     제조시작
                   </button>
                 )}
-                {order.status === '제조중' && (
+                {order.status === ORDER_STATUS.IN_PROGRESS && (
                   <div style={{
                     display: 'inline-block',
                     padding: '0.5rem 1rem',
@@ -95,7 +80,7 @@ function OrderStatus({ orders, onStatusChange }: OrderStatusProps) {
                     제조 중
                   </div>
                 )}
-                {order.status === '제조완료' && (
+                {order.status === ORDER_STATUS.COMPLETED && (
                   <div style={{
                     display: 'inline-block',
                     padding: '0.5rem 1rem',

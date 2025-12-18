@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import MenuOption, { MenuOptionItem } from './MenuOption';
+import { OPTION_NAMES, OPTION_PRICES } from '../constants';
+import { formatPrice } from '../utils/format';
 
 interface MenuCardProps {
   id: string;
@@ -11,11 +14,25 @@ interface MenuCardProps {
 function MenuCard({ id, name, price, description, onAddToCart }: MenuCardProps) {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
-  const handleOptionToggle = (option: string) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter(opt => opt !== option));
+  // 옵션 목록을 메모이제이션
+  const menuOptions: MenuOptionItem[] = useMemo(() => [
+    {
+      id: OPTION_NAMES.SHOT_ADD,
+      name: OPTION_NAMES.SHOT_ADD,
+      price: OPTION_PRICES.SHOT_ADD,
+    },
+    {
+      id: OPTION_NAMES.SYRUP_ADD,
+      name: OPTION_NAMES.SYRUP_ADD,
+      price: OPTION_PRICES.SYRUP_ADD,
+    },
+  ], []);
+
+  const handleOptionToggle = (optionId: string) => {
+    if (selectedOptions.includes(optionId)) {
+      setSelectedOptions(selectedOptions.filter(opt => opt !== optionId));
     } else {
-      setSelectedOptions([...selectedOptions, option]);
+      setSelectedOptions([...selectedOptions, optionId]);
     }
   };
 
@@ -48,31 +65,18 @@ function MenuCard({ id, name, price, description, onAddToCart }: MenuCardProps) 
       </div>
       <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{name}</h3>
       <p style={{ margin: 0, fontSize: '1.1rem', fontWeight: 'bold', color: '#333' }}>
-        {price.toLocaleString()}원
+        {formatPrice(price)}
       </p>
       {description && (
         <p style={{ margin: 0, fontSize: '0.9rem', color: '#666' }}>
           {description}
         </p>
       )}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={selectedOptions.includes('샷 추가')}
-            onChange={() => handleOptionToggle('샷 추가')}
-          />
-          <span>샷 추가 (+500원)</span>
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={selectedOptions.includes('시럽 추가')}
-            onChange={() => handleOptionToggle('시럽 추가')}
-          />
-          <span>시럽 추가 (+0원)</span>
-        </label>
-      </div>
+      <MenuOption
+        options={menuOptions}
+        selectedOptions={selectedOptions}
+        onToggle={handleOptionToggle}
+      />
       <button
         onClick={handleAddToCart}
         style={{

@@ -1,11 +1,4 @@
-interface CartItem {
-  id: string;
-  menuId: string;
-  menuName: string;
-  price: number;
-  options: string[];
-  quantity: number;
-}
+import { CartItem } from '../types';
 
 interface ShoppingCartProps {
   items: CartItem[];

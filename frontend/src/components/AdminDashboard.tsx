@@ -1,9 +1,4 @@
-interface DashboardStats {
-  totalOrders: number;
-  receivedOrders: number;
-  inProgressOrders: number;
-  completedOrders: number;
-}
+import { DashboardStats } from '../types';
 
 interface AdminDashboardProps {
   stats: DashboardStats;

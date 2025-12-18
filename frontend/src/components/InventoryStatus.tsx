@@ -1,8 +1,6 @@
-interface InventoryItem {
-  id: string;
-  name: string;
-  quantity: number;
-}
+import { InventoryItem } from '../types';
+import { INVENTORY_THRESHOLDS } from '../constants';
+import { formatQuantity } from '../utils/format';
 
 interface InventoryStatusProps {
   inventory: InventoryItem[];
@@ -11,8 +9,8 @@ interface InventoryStatusProps {
 
 function InventoryStatus({ inventory, onInventoryChange }: InventoryStatusProps) {
   const getStatus = (quantity: number): '정상' | '주의' | '품절' => {
-    if (quantity === 0) return '품절';
-    if (quantity < 5) return '주의';
+    if (quantity === INVENTORY_THRESHOLDS.OUT_OF_STOCK) return '품절';
+    if (quantity < INVENTORY_THRESHOLDS.WARNING) return '주의';
     return '정상';
   };
 
@@ -52,7 +50,7 @@ function InventoryStatus({ inventory, onInventoryChange }: InventoryStatusProps)
                   {item.name}
                 </div>
                 <div style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
-                  {item.quantity}개
+                  {formatQuantity(item.quantity)}
                 </div>
                 <div style={{
                   display: 'inline-block',

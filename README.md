@@ -439,8 +439,82 @@ Response: { id, status, ... }
 - [ ] 보안 테스트 (SQL 인젝션, XSS 등 보안 취약점)
 
 ### 구현 및 리팩토링
-- [ ] Implementation
-- [ ] Refactoring
+
+#### 프런트엔드 리팩토링 (우선순위별)
+
+**🔴 높은 우선순위 (즉시 개선 권장)**
+
+- [ ] **타입 정의 중복 해결**
+  - [ ] `src/types/` 디렉토리 생성 및 `index.ts` 파일 생성
+  - [ ] `CartItem`, `Order`, `Menu` 인터페이스 통합
+  - [ ] 모든 컴포넌트에서 공통 타입 import로 변경
+
+- [ ] **API 서비스 레이어 구축**
+  - [ ] `src/services/api.ts` 파일 생성 (Axios 인스턴스 설정)
+  - [ ] `menuService`, `orderService` 객체 생성
+  - [ ] Custom hooks 생성 (`useMenus`, `useOrders` 등)
+  - [ ] Mock 데이터 제거 및 API 연동
+
+- [ ] **에러 처리 추가**
+  - [ ] Error Boundary 컴포넌트 생성 및 적용
+  - [ ] API 호출 시 try-catch 및 에러 상태 관리
+  - [ ] 로딩 스피너 및 에러 메시지 UI 추가
+
+- [ ] **상태 관리 개선**
+  - [ ] 상태 관리 라이브러리 선택 및 설정 (Context API / Zustand / Redux)
+  - [ ] 장바구니, 주문 상태를 전역 상태로 이동
+  - [ ] 로컬 상태와 전역 상태 구분 명확화
+
+**🟡 중간 우선순위 (단기 개선 권장)**
+
+- [ ] **인라인 스타일 개선**
+  - [ ] 스타일링 솔루션 선택 (CSS Modules / styled-components / Tailwind CSS)
+  - [ ] 공통 스타일 파일 생성 및 컴포넌트별 스타일 분리
+  - [ ] 모든 컴포넌트에서 인라인 스타일 제거
+
+- [ ] **매직 넘버/문자열 상수화**
+  - [ ] `src/constants/index.ts` 파일 생성
+  - [ ] `OPTION_PRICES`, `INVENTORY_THRESHOLDS`, `ORDER_STATUS` 상수 정의
+  - [ ] 모든 하드코딩된 값들을 상수로 교체
+
+- [ ] **컴포넌트 책임 분리**
+  - [ ] `MenuCard` 컴포넌트에서 옵션 로직 분리
+  - [ ] `MenuOption` 컴포넌트 생성
+  - [ ] 옵션 데이터를 props로 받도록 변경
+
+- [ ] **유틸리티 함수 분리**
+  - [ ] `src/utils/date.ts` 파일 생성 (`formatDate` 함수 이동)
+  - [ ] `formatPrice` 함수 추가 및 중복 제거
+  - [ ] date-fns 라이브러리 검토 및 도입 고려
+
+**🟢 낮은 우선순위 (장기 개선 권장)**
+
+- [ ] **접근성 개선**
+  - [ ] 모든 버튼에 `aria-label` 추가
+  - [ ] 시맨틱 HTML 구조 개선 (`<nav>`, `<main>`, `<section>` 등)
+  - [ ] 키보드 네비게이션 지원
+
+- [ ] **성능 최적화**
+  - [ ] `useMemo`로 계산된 값 메모이제이션
+  - [ ] `useCallback`으로 이벤트 핸들러 메모이제이션
+  - [ ] `React.memo`로 컴포넌트 메모이제이션 적용
+
+- [ ] **문서화 개선**
+  - [ ] 주요 컴포넌트에 JSDoc 주석 추가
+  - [ ] 복잡한 비즈니스 로직에 주석 추가
+
+- [ ] **환경 변수 관리**
+  - [ ] `.env.example` 파일 생성
+  - [ ] Vite 환경 변수 설정 (`VITE_API_URL` 등)
+  - [ ] 개발/프로덕션 환경 구분
+
+- [ ] **기타 개선 사항**
+  - [ ] UUID 라이브러리 설치 및 ID 생성 로직 개선
+  - [ ] 날짜 타입 일관성 확보 (Date vs string)
+  - [ ] 인라인 스타일 조작 제거 (onMouseEnter/Leave)
+  - [ ] 테스트 커버리지 확인 및 테스트 가능한 구조로 리팩토링
+
+> 상세 내용은 `reports/FRONTEND_CODE_REVIEW.md` 참조
 
 ### 커밋 오류
 - 오류 확인
